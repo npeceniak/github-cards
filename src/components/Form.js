@@ -1,13 +1,13 @@
 import React, {useState} from "react";
+import axios from "axios";
 
-export const Form = () => {
-    // const userNameInput = React.createRef();
+export const Form = (props) => {
     const [state, setState] = useState({userName: ''});
-    // debugger
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // console.log(userNameInput.current.value);
-        console.log(state);
+        const response = await axios.get(`https://api.github.com/users/${state.userName}`);
+        props.onSubmit(response.data);
+        setState({userName: ''})
     };
 
     return (
@@ -16,7 +16,7 @@ export const Form = () => {
                 type="text"
                 placeholder="Github Username"
                 required
-                value={state.value}
+                value={state.userName}
                 onChange={event => setState({userName: event.target.value})}></input>
             <button>Add Card</button>
         </form>
